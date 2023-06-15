@@ -44,10 +44,10 @@ func Init(config Config) error {
 }
 
 func DeInit() {
-	gRPCClient.Close()
-	gRPCClient = nil
 	client.Kill()
 	client = nil
+	gRPCClient.Close()
+	gRPCClient = nil
 	libheifplugin = nil
 }
 
@@ -69,7 +69,7 @@ func startPlugin() error {
 		Level:  hclog.Debug,
 	})
 
-	client := plugin.NewClient(&plugin.ClientConfig{
+	client = plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: handshakeConfig,
 		Plugins:         pluginMap,
 		Cmd:             exec.Command(currentConfig.Command.BinPath, currentConfig.Command.Args...),
