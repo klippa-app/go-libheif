@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/gob"
 	"errors"
-	"github.com/klippa-app/go-libheif/library/requests"
-	"github.com/klippa-app/go-libheif/library/responses"
-	"github.com/klippa-app/go-libheif/library/shared"
 	"image"
 	"image/jpeg"
 	"image/png"
+
+	"github.com/klippa-app/go-libheif/library/requests"
+	"github.com/klippa-app/go-libheif/library/responses"
+	"github.com/klippa-app/go-libheif/library/shared"
 
 	"github.com/hashicorp/go-plugin"
 	_ "github.com/strukturag/libheif/go/heif"
