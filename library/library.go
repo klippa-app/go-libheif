@@ -89,14 +89,14 @@ func startPlugin() error {
 
 	rpcClient, err := client.Client()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	gRPCClient = rpcClient
 
 	raw, err := rpcClient.Dispense("libheif")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	pluginInstance := raw.(shared.Libheif)
