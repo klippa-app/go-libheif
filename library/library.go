@@ -1,15 +1,17 @@
 package library
 
 import (
+	"encoding/gob"
 	"errors"
-	"github.com/klippa-app/go-libheif/library/requests"
-	"github.com/klippa-app/go-libheif/library/shared"
 	"image"
 	"io"
 	"log"
 	"os"
 	"os/exec"
 	"time"
+
+	"github.com/klippa-app/go-libheif/library/requests"
+	"github.com/klippa-app/go-libheif/library/shared"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
@@ -32,6 +34,14 @@ var client *plugin.Client
 var gRPCClient plugin.ClientProtocol
 var libheifplugin shared.Libheif
 var currentConfig Config
+
+func init() {
+	// Needed to serialize the image interface.
+	gob.Register(&image.YCbCr{})
+	gob.Register(&image.RGBA64{})
+	gob.Register(&image.RGBA{})
+	gob.Register(&image.Gray{})
+}
 
 func Init(config Config) error {
 	if client != nil {

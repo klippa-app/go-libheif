@@ -1,12 +1,12 @@
 package libheif
 
 import (
-	"encoding/gob"
 	"errors"
-	"github.com/klippa-app/go-libheif/library"
 	"image"
 	"io"
 	"sync"
+
+	"github.com/klippa-app/go-libheif/library"
 )
 
 func DecodeImage(r io.Reader) (image.Image, error) {
@@ -63,12 +63,6 @@ func DeInit() {
 }
 
 func init() {
-	// Needed to serialize the image interface.
-	gob.Register(&image.YCbCr{})
-	gob.Register(&image.RGBA64{})
-	gob.Register(&image.RGBA{})
-	gob.Register(&image.Gray{})
-
 	image.RegisterFormat("heif", "????ftypheic", DecodeImage, DecodeConfig)
 	image.RegisterFormat("heif", "????ftypheim", DecodeImage, DecodeConfig)
 	image.RegisterFormat("heif", "????ftypheis", DecodeImage, DecodeConfig)
