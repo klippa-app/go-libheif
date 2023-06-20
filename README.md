@@ -20,7 +20,7 @@ process can be quite slow, this method can be useful if you just want to convert
 
 You can install libheif, libede265 and libaom from any source, but please remember that package managers might contain
 outdated versions.
-The Go bindings needs a pretty recent version, and this package references v1.14.2 (latest PPA version) currently, but
+The Go bindings needs a pretty recent version, and this package references v1.16.2 (latest PPA version) currently, but
 it might work with older versions.
 
 You can use the strukturag PPA to get very recent versions:
