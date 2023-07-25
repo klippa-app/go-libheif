@@ -1,5 +1,11 @@
 package plugin
 
+/*
+#cgo pkg-config: libheif
+#include <libheif/heif.h>
+*/
+import "C"
+
 import (
 	"bytes"
 	"encoding/gob"
@@ -22,6 +28,8 @@ func init() {
 	gob.Register(&image.RGBA64{})
 	gob.Register(&image.RGBA{})
 	gob.Register(&image.Gray{})
+
+	C.heif_init(nil)
 }
 
 var handshakeConfig = plugin.HandshakeConfig{
