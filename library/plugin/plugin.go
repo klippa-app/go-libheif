@@ -79,13 +79,15 @@ func (l *libHeifImplementation) DecodeConfig(request *requests.DecodeConfig) (*r
 }
 
 func (l *libHeifImplementation) RenderFile(request *requests.RenderFile) (*responses.RenderFile, error) {
-	decodedImage, _, err := image.Decode(bytes.NewReader(*request.Data))
+	decodedImage, format, err := image.Decode(bytes.NewReader(*request.Data))
 	if err != nil {
 		return nil, err
 	}
 
+	var newFormat string
 	var imgBuf bytes.Buffer
 	if request.OutputFormat == requests.RenderFileOutputFormatJPG {
+		newFormat = "jpeg"
 		var opt jpeg.Options
 		opt.Quality = 95
 
@@ -108,6 +110,7 @@ func (l *libHeifImplementation) RenderFile(request *requests.RenderFile) (*respo
 			imgBuf.Reset()
 		}
 	} else if request.OutputFormat == requests.RenderFileOutputFormatPNG {
+		newFormat = "png"
 		err := png.Encode(&imgBuf, decodedImage)
 		if err != nil {
 			return nil, err
@@ -122,7 +125,12 @@ func (l *libHeifImplementation) RenderFile(request *requests.RenderFile) (*respo
 
 	output := imgBuf.Bytes()
 
+	bounds := decodedImage.Bounds()
 	return &responses.RenderFile{
-		Output: &output,
+		Output:         &output,
+		OriginalFormat: format,
+		NewFormat:      newFormat,
+		Width:          bounds.Size().X,
+		Height:         bounds.Size().Y,
 	}, nil
 }

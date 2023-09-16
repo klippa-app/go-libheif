@@ -13,5 +13,8 @@ type DecodeConfig struct {
 }
 
 type RenderFile struct {
-	Output *[]byte
+	Width, Height  int
+	OriginalFormat string
+	NewFormat      string
+	Output         *[]byte
 }

@@ -3,6 +3,7 @@ package library
 import (
 	"encoding/gob"
 	"errors"
+	"github.com/klippa-app/go-libheif/library/responses"
 	"image"
 	"io"
 	"log"
@@ -151,7 +152,7 @@ type RenderOptions struct {
 	MaxFileSize  int64                  // The maximum filesize, if jpg is chosen as output format, it will try to compress it until it fits
 }
 
-func RenderFile(data *[]byte, options RenderOptions) (*[]byte, error) {
+func RenderFile(data *[]byte, options RenderOptions) (*responses.RenderFile, error) {
 	if libheifplugin == nil {
 		return nil, NotInitializedError
 	}
@@ -165,7 +166,7 @@ func RenderFile(data *[]byte, options RenderOptions) (*[]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return resp.Output, nil
+	return resp, nil
 }
 
 func DecodeImage(r io.Reader) (image.Image, error) {

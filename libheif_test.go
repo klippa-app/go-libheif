@@ -92,7 +92,19 @@ func TestRenderJPEG(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	img, dec, err := image.Decode(bytes.NewReader(*renderedFile))
+	if got, want := renderedFile.OriginalFormat, "heif"; got != want {
+		t.Errorf("unexpected original format: got %s, want %s", got, want)
+	}
+
+	if got, want := renderedFile.NewFormat, "jpeg"; got != want {
+		t.Errorf("unexpected new format: got %s, want %s", got, want)
+	}
+
+	if w, h := renderedFile.Width, renderedFile.Height; w != 1596 || h != 1064 {
+		t.Errorf("unexpected rendered image size: got %dx%d, want 1596x1064", w, h)
+	}
+
+	img, dec, err := image.Decode(bytes.NewReader(*renderedFile.Output))
 	if err != nil {
 		t.Fatalf("unable to decode jpeg image: %s", err)
 	}
@@ -124,7 +136,19 @@ func TestRenderPNG(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	img, dec, err := image.Decode(bytes.NewReader(*renderedFile))
+	if got, want := renderedFile.OriginalFormat, "heif"; got != want {
+		t.Errorf("unexpected original format: got %s, want %s", got, want)
+	}
+
+	if got, want := renderedFile.NewFormat, "png"; got != want {
+		t.Errorf("unexpected new format: got %s, want %s", got, want)
+	}
+
+	if w, h := renderedFile.Width, renderedFile.Height; w != 1596 || h != 1064 {
+		t.Errorf("unexpected rendered image size: got %dx%d, want 1596x1064", w, h)
+	}
+
+	img, dec, err := image.Decode(bytes.NewReader(*renderedFile.Output))
 	if err != nil {
 		t.Fatalf("unable to decode jpeg image: %s", err)
 	}
