@@ -148,8 +148,10 @@ const (
 )
 
 type RenderOptions struct {
-	OutputFormat RenderFileOutputFormat // The format to output the image as
-	MaxFileSize  int64                  // The maximum filesize, if jpg is chosen as output format, it will try to compress it until it fits
+	OutputFormat  RenderFileOutputFormat // The format to output the image as
+	MaxFileSize   int64                  // Only used when OutputFormat RenderFileOutputFormatJPG. The maximum filesize, if jpg is chosen as output format, it will try to lower the quality it until it fits.
+	OutputQuality int                    // Only used when OutputFormat RenderFileOutputFormatJPG. Ranges from 1 to 100 inclusive, higher is better. The default is 95.
+	Progressive   bool                   // Only used when OutputFormat RenderFileOutputFormatJPG and with build tag go_libheif_use_turbojpeg. Will render a progressive jpeg.
 }
 
 func RenderFile(data *[]byte, options RenderOptions) (*responses.RenderFile, error) {
@@ -162,7 +164,7 @@ func RenderFile(data *[]byte, options RenderOptions) (*responses.RenderFile, err
 		return nil, errors.New("could not check or start plugin")
 	}
 
-	resp, err := libheifplugin.RenderFile(&requests.RenderFile{Data: data, OutputFormat: requests.RenderFileOutputFormat(options.OutputFormat), MaxFileSize: options.MaxFileSize})
+	resp, err := libheifplugin.RenderFile(&requests.RenderFile{Data: data, OutputFormat: requests.RenderFileOutputFormat(options.OutputFormat), MaxFileSize: options.MaxFileSize, OutputQuality: options.OutputQuality, Progressive: options.Progressive})
 	if err != nil {
 		return nil, err
 	}

@@ -14,19 +14,6 @@ import (
 	"github.com/klippa-app/go-libheif/library"
 )
 
-func initLib() error {
-	err := Init(Config{LibraryConfig: library.Config{
-		Command: library.Command{
-			BinPath: "go",
-			Args:    []string{"run", "library/worker_example/main.go"},
-		},
-	}})
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func TestFormatRegistered(t *testing.T) {
 	err := initLib()
 	if err != nil {
@@ -162,7 +149,7 @@ func TestRenderPNG(t *testing.T) {
 	}
 }
 
-func Benchmark(b *testing.B) {
+func BenchmarkDecode(b *testing.B) {
 	err := initLib()
 	if err != nil {
 		b.Fatal(err)
@@ -183,5 +170,28 @@ func Benchmark(b *testing.B) {
 		}
 
 		r.Seek(0, io.SeekStart)
+	}
+}
+
+func BenchmarkRender(b *testing.B) {
+	err := initLib()
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	data, err := os.ReadFile("testdata/camel.heic")
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	b.ResetTimer()
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		_, err = library.RenderFile(&data, library.RenderOptions{
+			OutputFormat: library.RenderFileOutputFormatJPG,
+		})
+		if err != nil {
+			b.Fatal(err)
+		}
 	}
 }

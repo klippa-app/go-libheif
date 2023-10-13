@@ -14,6 +14,7 @@ import (
 	"image/jpeg"
 	"image/png"
 
+	"github.com/klippa-app/go-libheif/library/plugin/image_jpeg"
 	"github.com/klippa-app/go-libheif/library/requests"
 	"github.com/klippa-app/go-libheif/library/responses"
 	"github.com/klippa-app/go-libheif/library/shared"
@@ -88,11 +89,19 @@ func (l *libHeifImplementation) RenderFile(request *requests.RenderFile) (*respo
 	var imgBuf bytes.Buffer
 	if request.OutputFormat == requests.RenderFileOutputFormatJPG {
 		newFormat = "jpeg"
-		var opt jpeg.Options
-		opt.Quality = 95
+		opt := image_jpeg.Options{
+			Options: &jpeg.Options{
+				Quality: 95,
+			},
+			Progressive: request.Progressive,
+		}
+
+		if request.OutputQuality > 0 {
+			opt.Options.Quality = request.OutputQuality
+		}
 
 		for {
-			err := jpeg.Encode(&imgBuf, decodedImage, &opt)
+			err := image_jpeg.Encode(&imgBuf, decodedImage, opt)
 			if err != nil {
 				return nil, err
 			}
