@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/hashicorp/go-hclog v1.5.0
 	github.com/hashicorp/go-plugin v1.5.2
-	github.com/strukturag/libheif v1.16.2
+	github.com/strukturag/libheif v1.17.1
 )
 
 require (
