@@ -3,7 +3,7 @@ module github.com/klippa-app/go-libheif
 go 1.20
 
 require (
-	github.com/hashicorp/go-hclog v1.5.0
+	github.com/hashicorp/go-hclog v1.6.2
 	github.com/hashicorp/go-plugin v1.6.0
 	github.com/strukturag/libheif v1.17.3
 )
